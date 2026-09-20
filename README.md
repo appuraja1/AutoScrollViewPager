@@ -47,7 +47,7 @@ Or, if using root build.gradle:Groovyallprojects {
 
 
 2. Add the dependencyAdd the library to your module-level build.gradle (usually app/build.gradle):Groovydependencies {
-    implementation 'com.github.appuraja1:AutoScrollViewPager:v1.0.0'
+    implementation 'com.github.appuraja1:AutoScrollViewPager:v1.0.1'
 }
 
 
