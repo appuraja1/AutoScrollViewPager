@@ -45,7 +45,7 @@ Or, if using root build.gradle:Groovyallprojects {
 }
 
 
-```
+```groovy
 2. Add the dependencyAdd the library to your module-level build.gradle (usually app/build.gradle):Groovydependencies {
     implementation 'com.github.appuraja1:AutoScrollViewPager:v1.0.3'
 }
@@ -53,6 +53,8 @@ Or, if using root build.gradle:Groovyallprojects {
 ```
 
 Quick Start
+
+```groovy
 
 1. XML LayoutAdd AutoScrollViewPager inside your layout file:XML<com.github.appuraja.AutoScrollViewPager
     android:id="@+id/autoScrollViewPager"
@@ -64,7 +66,7 @@ Quick Start
     app:stopWhenTouch="true"
     app:cycle="true" />
 
-
+```
 2. Implement AdapterExtend InfinitePagerAdapter to enable continuous looping and view recycling:Javapublic class BannerAdapter extends InfinitePagerAdapter {
 
     private final List<String> items;
@@ -102,6 +104,7 @@ Quick Start
         return imageView;
     }
 }
+
 
 
 3. Initialize in Activity or FragmentJavaAutoScrollViewPager viewPager = findViewById(R.id.autoScrollViewPager);
