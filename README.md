@@ -43,10 +43,18 @@ Or, if using root build.gradle:Groovyallprojects {
         maven { url '[https://jitpack.io](https://jitpack.io)' }
     }
 }
+
+
+
 2. Add the dependencyAdd the library to your module-level build.gradle (usually app/build.gradle):Groovydependencies {
     implementation 'com.github.appuraja1:AutoScrollViewPager:v1.0.0'
 }
-Quick Start1. XML LayoutAdd AutoScrollViewPager inside your layout file:XML<com.github.appuraja.AutoScrollViewPager
+
+
+
+Quick Start
+
+1. XML LayoutAdd AutoScrollViewPager inside your layout file:XML<com.github.appuraja.AutoScrollViewPager
     android:id="@+id/autoScrollViewPager"
     android:layout_width="match_parent"
     android:layout_height="200dp"
@@ -55,6 +63,8 @@ Quick Start1. XML LayoutAdd AutoScrollViewPager inside your layout file:XML<com.
     app:slideDirection="right"
     app:stopWhenTouch="true"
     app:cycle="true" />
+
+
 2. Implement AdapterExtend InfinitePagerAdapter to enable continuous looping and view recycling:Javapublic class BannerAdapter extends InfinitePagerAdapter {
 
     private final List<String> items;
@@ -92,6 +102,8 @@ Quick Start1. XML LayoutAdd AutoScrollViewPager inside your layout file:XML<com.
         return imageView;
     }
 }
+
+
 3. Initialize in Activity or FragmentJavaAutoScrollViewPager viewPager = findViewById(R.id.autoScrollViewPager);
 
 List<String> bannerList = Arrays.asList(
@@ -103,9 +115,14 @@ List<String> bannerList = Arrays.asList(
 BannerAdapter adapter = new BannerAdapter(this, bannerList);
 viewPager.setAdapter(adapter);
 
+
 // Start auto scrolling
 viewPager.startAutoScroll();
 XML Attributes & API ConfigurationXML AttributeJava MethodDefaultDescriptionapp:slideIntervalsetSlideInterval(int ms)5000Delay between auto transitions in milliseconds.app:slideDurationsetSlideDuration(int ms)800Smooth transition animation time in milliseconds.app:slideDirectionsetDirection(int dir)DIRECTION_RIGHTScroll direction (left or right).app:stopWhenTouchsetStopWhenTouch(boolean)truePauses auto-scroll on user interaction.app:cyclesetCycle(boolean)trueLoop back to initial page when end is reached.Public MethodsstartAutoScroll(): Begins auto-sliding using the configured interval.startAutoScroll(int delayTime): Starts auto-sliding with a custom delay override.stopAutoScroll(): Stops auto-sliding immediately.LicensePlaintextCopyright 2026 Appu Raja
+
+
+
+
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
