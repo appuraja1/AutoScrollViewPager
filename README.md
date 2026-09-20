@@ -1,140 +1,120 @@
 # AutoScrollViewPager
 
-[![Release](https://jitpack.io/v/demoNo/AutoScrollViewPager.svg)](https://jitpack.io/#demoNo/AutoScrollViewPager)  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Release](https://jitpack.io/v/appuraja1/AutoScrollViewPager.svg)](https://jitpack.io/#appuraja1/AutoScrollViewPager)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+[![AndroidX](https://img.shields.io/badge/AndroidX-Compatible-blue.svg)](https://developer.android.com/jetpack/androidx)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-README: [English](https://github.com/demoNo/AutoScrollViewPager/blob/master/README.md) | [中文](https://github.com/demoNo/AutoScrollViewPager/blob/master/README-zh.md)
+A lightweight, modern, and high-performance **Auto-Scrolling ViewPager** for Android. Designed specifically for banner loops, carousel sliders, smooth transitions, and leak-free lifecycle handling on AndroidX.
 
-![](https://raw.githubusercontent.com/demoNo/AutoScrollViewPager/master/art/screen_record.gif)
+---
 
-## Add to your project
+## Features
 
-Gradle
+* 🔄 **Infinite Looping:** Seamless infinite scrolling without flickering or blank frames.
+* ⚡ **AndroidX Ready:** Fully migrated to modern Android components and APIs.
+* 🛠 **Touch-Friendly:** Pauses automatically on touch and resumes gracefully (`ACTION_DOWN`, `ACTION_UP`, and `ACTION_CANCEL` support).
+* 🎯 **Zero Memory Leaks:** Lifecycle-aware handler cleanup tied to window detach events.
+* 🎨 **Customizable:** Dynamic slide intervals, animation duration, direction, and programmatic controls.
+* 📦 **Efficient View Recycling:** Built-in view recycling mechanism for minimal memory footprint.
 
-* Add it in your root build.gradle at the end of repositories:
-```Gradle
-allprojects {
+---
+
+## Installation
+
+### 1. Add the JitPack repository
+
+Add it to your `settings.gradle` file:
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-	...
-	maven { url 'https://jitpack.io' }
+        google()
+        mavenCentral()
+        maven { url '[https://jitpack.io](https://jitpack.io)' }
     }
 }
-```
 
-* Add the dependency
-```Gradle
-dependencies {
-    compile 'com.github.demoNo:AutoScrollViewPager:v1.0.2'
+Or, if using root build.gradle:Groovyallprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url '[https://jitpack.io](https://jitpack.io)' }
+    }
 }
-```
-
-
-Maven
-
-* Add the JitPack repository to your build file
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-```
-
-* Add the dependency
-```xml
-<dependency>
-    <groupId>com.github.demoNo</groupId>
-    <artifactId>AutoScrollViewPager</artifactId>
-    <version>v1.0.2</version>
-</dependency>
-```
-
-## Feature
-
-* Unlimited scrolling
-* Custom slide duration
-* Custom slide interval
-* Slide both right and left
-* todo
-
-## How to use
-
-* Use in xml
-
-```xml
-<appuraja.AutoScrollViewPager
-    android:id="@+id/viewPager"
+2. Add the dependencyAdd the library to your module-level build.gradle (usually app/build.gradle):Groovydependencies {
+    implementation 'com.github.appuraja1:AutoScrollViewPager:v1.0.0'
+}
+Quick Start1. XML LayoutAdd AutoScrollViewPager inside your layout file:XML<com.github.appuraja.AutoScrollViewPager
+    android:id="@+id/autoScrollViewPager"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    app:stopWhenTouch="true"
-    app:slideInterval="5000"
+    app:slideInterval="4000"
+    app:slideDuration="800"
     app:slideDirection="right"
-    app:slideDuration="5000"/>
-```
+    app:stopWhenTouch="true"
+    app:cycle="true" />
+2. Implement AdapterExtend InfinitePagerAdapter to enable continuous looping and view recycling:Javapublic class BannerAdapter extends InfinitePagerAdapter {
 
-* Create an Adapter extends InfinitePagerAdapter
-```Java
-public class MyAdapter extends InfinitePagerAdapter {
+    private final List<String> items;
+    private final Context context;
 
-    private List<String> data;
-
-    public MyAdapter(List<String> data) {
-        this.data = data;
+    public BannerAdapter(Context context, List<String> items) {
+        this.context = context;
+        this.items = items;
     }
 
     @Override
     public int getItemCount() {
-        return data == null ? 0 : data.size();
+        return items != null ? items.size() : 0;
     }
 
+    @NonNull
     @Override
-    public View getItemView(int position, View convertView, ViewGroup container) {
-        return your view;
+    public View getItemView(int position, @Nullable View convertView, @NonNull ViewGroup container) {
+        ImageView imageView;
+        if (convertView == null) {
+            imageView = new ImageView(context);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        } else {
+            imageView = (ImageView) convertView;
+        }
+
+        // Load image using Glide or Coil
+        Glide.with(context)
+                .load(items.get(position))
+                .into(imageView);
+
+        return imageView;
     }
 }
-```
+3. Initialize in Activity or FragmentJavaAutoScrollViewPager viewPager = findViewById(R.id.autoScrollViewPager);
 
-* Set Adapter
-```Java
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    AutoScrollViewPager mViewPager = (AutoScrollViewPager) findViewById(R.id.viewPager);
-    MyAdapter mAdapter = new MyAdapter(data);
-    mViewPager.setAdapter(mAdapter);
-    // optional start auto scroll
-    mViewPager.startAutoScroll();
-}
-```
+List<String> bannerList = Arrays.asList(
+    "[https://example.com/banner1.jpg](https://example.com/banner1.jpg)",
+    "[https://example.com/banner2.jpg](https://example.com/banner2.jpg)",
+    "[https://example.com/banner3.jpg](https://example.com/banner3.jpg)"
+);
 
-## More setting
+BannerAdapter adapter = new BannerAdapter(this, bannerList);
+viewPager.setAdapter(adapter);
 
-* `startAutoScroll()` Start auto scroll.
-* `stopAutoScroll()` Stop auto scroll.
-* `setSlideInterval(int slideInterval)` Set each item slide interval, default `5000`ms.
-* `setDirection(int direction)` Set auto scroll direction `DIRECTION_RIGHT` or `DIRECTION_LEFT`, default `RIGHT`.
-* `setStopWhenTouch(boolean stopWhenTouch)` Whether stop when touch ViewPager, default `true`.
-* `setCycle(boolean cycle)` Whether auto scroll to first item when scroll to last item, only for `Adapter` that extends `PagerAdapter`, default `false`.
-* `setSlideDuration(int slideDuration)` Set each item scroll duration, default `800`ms.
+// Start auto scrolling
+viewPager.startAutoScroll();
+XML Attributes & API ConfigurationXML AttributeJava MethodDefaultDescriptionapp:slideIntervalsetSlideInterval(int ms)5000Delay between auto transitions in milliseconds.app:slideDurationsetSlideDuration(int ms)800Smooth transition animation time in milliseconds.app:slideDirectionsetDirection(int dir)DIRECTION_RIGHTScroll direction (left or right).app:stopWhenTouchsetStopWhenTouch(boolean)truePauses auto-scroll on user interaction.app:cyclesetCycle(boolean)trueLoop back to initial page when end is reached.Public MethodsstartAutoScroll(): Begins auto-sliding using the configured interval.startAutoScroll(int delayTime): Starts auto-sliding with a custom delay override.stopAutoScroll(): Stops auto-sliding immediately.LicensePlaintextCopyright 2026 Appu Raja
 
-## Credits
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-* [android-auto-scroll-view-pager](https://github.com/Trinea/android-auto-scroll-view-pager) Android auto scroll viewpager or viewpager in viewpager.
-* [How to make a ViewPager loop](http://stackoverflow.com/questions/10188011/how-to-make-a-viewpager-loop/12965787#12965787)
+    [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-## Licence
-
-```
-                    Copyright 2016 demoNo
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-```
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
