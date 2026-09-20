@@ -48,7 +48,7 @@ afterEvaluate {
                 from components.findByName('release')
                 groupId = 'com.github.appuraja'
                 artifactId = 'autoscrollviewpager'
-                version = '1.0.0'
+                version = '1.0.3'
             }
         }
     }
